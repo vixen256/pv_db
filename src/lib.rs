@@ -527,12 +527,16 @@ fn diva_bool<'de, D: serde::Deserializer<'de>, T: From<bool>>(
 impl PvDb {
     pub fn parse<P: AsRef<std::path::Path>>(path: P) -> Option<Self> {
         let input = std::fs::read_to_string(path).ok()?;
-        let input = input.lines().dedup().collect::<Vec<_>>().join("\n");
-        serde_divatree::from_str::<Self>(&input).ok()
+        Self::from_str(&input)
     }
 
     pub fn from_str(str: &str) -> Option<Self> {
-        let input = str.lines().dedup().collect::<Vec<_>>().join("\n");
+        let input = str
+            .lines()
+            .dedup()
+            .filter(|line| line.contains('='))
+            .collect::<Vec<_>>()
+            .join("\n");
         serde_divatree::from_str::<Self>(&input).ok()
     }
 }
@@ -543,8 +547,7 @@ mod tests {
 
     #[test]
     fn read_base() {
-        let input = std::fs::read_to_string("/home/brogamer/pv_db.txt").unwrap();
-        let db = serde_divatree::from_str::<PvDb>(&input).unwrap();
+        let db = PvDb::parse("/home/brogamer/pv_db.txt").unwrap();
         let ids = db.pvs.into_keys().collect::<Vec<_>>();
         let expected = vec![
             1, 2, 5, 7, 8, 9, 10, 12, 13, 14, 16, 22, 28, 30, 31, 32, 37, 38, 39, 40, 41, 42, 43,
@@ -563,9 +566,7 @@ mod tests {
 
     #[test]
     fn read_mdata() {
-        let input = std::fs::read_to_string("/home/brogamer/mdata_pv_db.txt").unwrap();
-        let input = input.lines().dedup().collect::<Vec<_>>().join("\n");
-        let db = serde_divatree::from_str::<PvDb>(&input).unwrap();
+        let db = PvDb::parse("/home/brogamer/mdata_pv_db.txt").unwrap();
         let ids = db.pvs.into_keys().collect::<Vec<_>>();
         let expected = vec![
             3, 4, 5, 6, 11, 15, 17, 18, 20, 21, 23, 24, 25, 29, 63, 64, 67, 84, 101, 203, 204, 205,
@@ -573,6 +574,21 @@ mod tests {
             408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 422, 423, 424,
             425, 426, 427, 428, 429, 430, 431, 432, 434, 436, 437, 438, 439, 440, 441, 442, 443,
             618,
+        ];
+        assert_eq!(ids, expected);
+    }
+
+    #[test]
+    fn read_mod() {
+        let db = PvDb::parse("/home/brogamer/mod_pv_db.txt").unwrap();
+        let ids = db.pvs.into_keys().collect::<Vec<_>>();
+        let expected = vec![
+            470, 471, 472, 473, 474, 475, 476, 477, 478, 479, 480, 481, 482, 483, 485, 486, 488,
+            489, 490, 491, 492, 493, 494, 495, 496, 497, 498, 499, 500, 501, 502, 915, 916, 917,
+            918, 919, 920, 921, 922, 923, 924, 925, 926, 927, 928, 929, 930, 931, 932, 933, 934,
+            935, 936, 937, 938, 939, 940, 941, 942, 943, 944, 945, 946, 947, 948, 949, 950, 951,
+            953, 954, 958, 959, 960, 961, 962, 963, 964, 965, 966, 967, 968, 969, 970, 971, 972,
+            973, 974, 975, 976, 977,
         ];
         assert_eq!(ids, expected);
     }
