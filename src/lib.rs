@@ -129,6 +129,34 @@ pub enum Level {
     PV_LV_10_0,
 }
 
+impl ToString for Level {
+    fn to_string(&self) -> String {
+        String::from(match self {
+            Level::PV_LV_00_0 => "0",
+            Level::PV_LV_00_5 => "0.5",
+            Level::PV_LV_01_0 => "1",
+            Level::PV_LV_01_5 => "1.5",
+            Level::PV_LV_02_0 => "2",
+            Level::PV_LV_02_5 => "2.5",
+            Level::PV_LV_03_0 => "3",
+            Level::PV_LV_03_5 => "3.5",
+            Level::PV_LV_04_0 => "4",
+            Level::PV_LV_04_5 => "4.5",
+            Level::PV_LV_05_0 => "5",
+            Level::PV_LV_05_5 => "5.5",
+            Level::PV_LV_06_0 => "6",
+            Level::PV_LV_06_5 => "6.5",
+            Level::PV_LV_07_0 => "7",
+            Level::PV_LV_07_5 => "7.5",
+            Level::PV_LV_08_0 => "8",
+            Level::PV_LV_08_5 => "8.5",
+            Level::PV_LV_09_0 => "9",
+            Level::PV_LV_09_5 => "9.5",
+            Level::PV_LV_10_0 => "10",
+        })
+    }
+}
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct DifficultyAttribute {
     #[serde(default)]
