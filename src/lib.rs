@@ -77,6 +77,7 @@ pub struct MovieList {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct SongInfo {
     pub music: Option<String>,
+    pub illustrator: Option<String>,
     pub lyrics: Option<String>,
     pub arranger: Option<String>,
     pub manipulator: Option<String>,
@@ -559,13 +560,13 @@ impl PvDb {
     }
 
     pub fn from_str(str: &str) -> Option<Self> {
-        let input = str
+        let mut input = str
             .lines()
             .dedup()
             .filter(|line| line.contains('='))
-            .collect::<Vec<_>>()
-            .join("\n");
-        serde_divatree::from_str::<Self>(&input).ok()
+            .collect::<Vec<_>>();
+        input.sort();
+        serde_divatree::from_str::<Self>(&input.join("\n")).ok()
     }
 }
 
