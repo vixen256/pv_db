@@ -400,7 +400,7 @@ pub struct Entry {
     pub song_name_en: String,
     pub song_name_reading: String,
     pub song_name_reading_en: Option<String>,
-    pub bpm: i32,
+    pub bpm: Option<i32>,
     pub song_file_name: String,
     pub date: i32,
     pub difficulty: Option<Difficulties>,
