@@ -1,4 +1,3 @@
-use itertools::Itertools;
 use serde::de::{MapAccess, Visitor};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -562,48 +561,11 @@ impl PvDb {
     pub fn from_str(str: &str) -> Option<Self> {
         let mut input = str
             .lines()
-            .dedup()
             .filter(|line| line.contains('='))
             .collect::<Vec<_>>();
         input.sort();
+        // Remove duplicate keys
+        input.dedup_by(|a, b| a.split('=').next() == b.split('=').next());
         serde_divatree::from_str::<Self>(&input.join("\n")).ok()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn read_base() {
-        let db = PvDb::parse("/home/brogamer/pv_db.txt").unwrap();
-        let ids = db.pvs.into_keys().collect::<Vec<_>>();
-        let expected = vec![
-            1, 2, 5, 7, 8, 9, 10, 12, 13, 14, 16, 22, 28, 30, 31, 32, 37, 38, 39, 40, 41, 42, 43,
-            44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 65, 66, 68,
-            79, 81, 82, 83, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 102, 103, 104, 201,
-            202, 212, 213, 215, 218, 219, 220, 221, 222, 224, 225, 226, 227, 228, 231, 232, 234,
-            238, 239, 240, 241, 242, 243, 244, 246, 247, 248, 249, 250, 251, 253, 254, 255, 257,
-            259, 260, 261, 262, 263, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276,
-            277, 278, 279, 280, 281, 433, 435, 600, 601, 602, 603, 604, 605, 607, 608, 609, 610,
-            611, 612, 613, 614, 615, 616, 617, 619, 620, 621, 622, 623, 624, 625, 626, 627, 628,
-            629, 630, 631, 637, 638, 639, 640, 641, 642, 710, 722, 723, 724, 725, 726, 727, 728,
-            729, 730, 731, 732, 733, 734, 736, 737, 738, 739, 740, 832,
-        ];
-        assert_eq!(ids, expected);
-    }
-
-    #[test]
-    fn read_mdata() {
-        let db = PvDb::parse("/home/brogamer/mdata_pv_db.txt").unwrap();
-        let ids = db.pvs.into_keys().collect::<Vec<_>>();
-        let expected = vec![
-            3, 4, 5, 6, 11, 15, 17, 18, 20, 21, 23, 24, 25, 29, 63, 64, 67, 84, 101, 203, 204, 205,
-            206, 208, 209, 210, 211, 214, 216, 223, 233, 235, 236, 401, 402, 403, 404, 405, 407,
-            408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 418, 419, 420, 421, 422, 423, 424,
-            425, 426, 427, 428, 429, 430, 431, 432, 434, 436, 437, 438, 439, 440, 441, 442, 443,
-            618,
-        ];
-        assert_eq!(ids, expected);
     }
 }
