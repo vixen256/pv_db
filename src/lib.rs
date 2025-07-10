@@ -103,7 +103,7 @@ pub struct Npr {
     pub chara_lightness: f32,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, PartialOrd)]
 #[allow(non_camel_case_types)]
 pub enum Level {
     PV_LV_00_0,
@@ -562,6 +562,7 @@ impl PvDb {
         let mut input = str
             .lines()
             .filter(|line| line.contains('='))
+            .filter(|line| !line.starts_with('#'))
             .collect::<Vec<_>>();
         input.sort();
         // Remove duplicate keys
