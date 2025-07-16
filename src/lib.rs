@@ -233,11 +233,9 @@ pub enum PerformerType {
     Guest,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Serialize, Deserialize, Clone, Default)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Chara {
-    #[serde(rename = "MIK")]
-    Miku,
     #[serde(rename = "RIN")]
     Rin,
     #[serde(rename = "LEN")]
@@ -258,6 +256,10 @@ pub enum Chara {
     Teto,
     #[serde(rename = "EXT")]
     Extra,
+    #[serde(rename = "MIK")]
+    #[serde(other)]
+    #[default]
+    Miku,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
