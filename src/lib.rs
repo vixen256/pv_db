@@ -2,7 +2,11 @@ use serde::de::{MapAccess, Visitor};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
+#[cfg(feature = "utoipa")]
+use utoipa::ToSchema;
+
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct Difficulty {
     pub script_file_name: String,
     pub attribute: Option<DifficultyAttribute>,
@@ -53,6 +57,7 @@ pub struct Difficulty {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum MoviePvType {
     Only,
@@ -62,6 +67,7 @@ pub enum MoviePvType {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum MovieSurface {
     Back,
@@ -69,11 +75,13 @@ pub enum MovieSurface {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct MovieList {
     pub name: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct SongInfo {
     pub music: Option<String>,
     pub illustrator: Option<String>,
@@ -86,12 +94,14 @@ pub struct SongInfo {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct ExInfo {
     pub key: String,
     pub val: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct TitleImage {
     pub time: Option<f32>,
     pub end_time: Option<f32>,
@@ -99,11 +109,13 @@ pub struct TitleImage {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct Npr {
     pub chara_lightness: f32,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, PartialOrd)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 #[allow(non_camel_case_types)]
 pub enum Level {
     PV_LV_00_0,
@@ -158,6 +170,7 @@ impl ToString for Level {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct DifficultyAttribute {
     #[serde(default)]
     #[serde(deserialize_with = "diva_bool")]
@@ -171,6 +184,7 @@ pub struct DifficultyAttribute {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct Difficulties {
     pub attribute: Option<DifficultyAttribute>,
     pub easy: Option<Vec<Difficulty>>,
@@ -181,18 +195,21 @@ pub struct Difficulties {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct Mdata {
     pub flag: Option<i32>,
     pub dir: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct Sabi {
     pub start_time: Option<f32>,
     pub play_time: Option<f32>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct Perfomer {
     #[serde(rename = "type")]
     pub performer_type: Option<PerformerType>,
@@ -212,6 +229,7 @@ pub struct Perfomer {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum PerformerSize {
     Normal,
@@ -222,6 +240,7 @@ pub enum PerformerSize {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum PerformerType {
     Vocal,
@@ -234,6 +253,7 @@ pub enum PerformerType {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, Default)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum Chara {
     #[serde(rename = "RIN")]
@@ -263,6 +283,7 @@ pub enum Chara {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct ChrCam {
     pub id: Option<i32>,
     pub chara: Option<Chara>,
@@ -271,6 +292,7 @@ pub struct ChrCam {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct ChrMot {
     pub id: Option<i32>,
     pub chara: Option<Chara>,
@@ -279,6 +301,7 @@ pub struct ChrMot {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct ChrEffData {
     #[serde(rename = "type")]
     pub data_type: Option<ChrEffType>,
@@ -286,6 +309,7 @@ pub struct ChrEffData {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum ChrEffType {
     #[serde(rename = "AUTH3D")]
@@ -295,6 +319,7 @@ pub enum ChrEffType {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct ChrEff {
     pub id: Option<i32>,
     pub name: Option<Chara>,
@@ -302,6 +327,7 @@ pub struct ChrEff {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum EyesAdjust {
     Direction,
@@ -310,6 +336,7 @@ pub enum EyesAdjust {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct EyesRotRate {
     pub chara: Chara,
     pub xp_rate: f32,
@@ -317,12 +344,14 @@ pub struct EyesRotRate {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct ExAuth {
     pub org_name: String,
     pub name: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct ExSong {
     pub chara: Chara,
     pub chara2: Option<Chara>,
@@ -337,6 +366,7 @@ pub struct ExSong {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct OsageInit {
     pub motion: String,
     pub frame: i32,
@@ -344,6 +374,7 @@ pub struct OsageInit {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct StageParam {
     pub stage: Option<String>,
     pub mhd_id: Option<i32>,
@@ -352,6 +383,7 @@ pub struct StageParam {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct Disp2D {
     pub set_name: Option<String>,
     pub target_shadow_type: Option<i32>,
@@ -365,11 +397,13 @@ pub struct Disp2D {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct PvExpression {
     pub file_name: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct AnotherSong {
     pub name: Option<String>,
     pub name_en: Option<String>,
@@ -380,6 +414,7 @@ pub struct AnotherSong {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum FrameTextureType {
     PrePp,
@@ -388,6 +423,7 @@ pub enum FrameTextureType {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct AuthReplaceByModule {
     pub id: Option<i32>,
     pub module_id: Option<i32>,
@@ -396,6 +432,7 @@ pub struct AuthReplaceByModule {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[cfg_attr(feature = "utoipa", derive(ToSchema))]
 pub struct Entry {
     pub song_name: String,
     pub song_name_en: String,
